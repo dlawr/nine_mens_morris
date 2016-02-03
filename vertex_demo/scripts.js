@@ -47,6 +47,13 @@ function testEdge(arr) {
   return match;
 }
 
+function movePiece(vert1, vert2, color) { //vert1 and vert2 are vertex objects
+  vert1.color = 'blank';
+  vert2.color = color;
+  vert1.id.css( "color", "white" );
+  vert2.id.css( "color", color );
+}
+
 function addClickEvent($node, fn) {
   $node.on('click', fn);
 }
@@ -99,6 +106,6 @@ console.log(testEdge(vertex3.edge));
 
 console.log(vertex3);
 
-$( "#two" ).on( "mouseover", function() {
-  $( "#two" ).css( "color", "red" );
-});
+// $( "#two" ).on( "mouseover", function() {
+//   $( "#two" ).css( "color", "red" );
+// });
