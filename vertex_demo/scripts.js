@@ -50,7 +50,7 @@ function testEdge(arr) {
 function movePiece(vert1, vert2, color) { //vert1 and vert2 are vertex objects
   vert1.color = 'blank';
   vert2.color = color;
-  vert1.id.css( "color", "white" );
+  // vert1.id.css( "color", "white" ); //make blank
   vert2.id.css( "color", color );
 }
 
