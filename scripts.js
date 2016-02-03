@@ -31,29 +31,33 @@ function createVerticies() {
   for (var i = 0; i < 24; i++) {
     board.verticies.push(new Vertex(i)); //game does not use position of vertex in array only edge and adjascent stored within vertex
   }
-  // board.verticies[0].edge.push([board.verticies[0], board.verticies[1], board.verticies[2]]);
-  // board.verticies[0].edge.push([board.verticies[0], board.verticies[7], board.verticies[6]]);
-  // board.verticies[1].edge.push([board.verticies[0], board.verticies[1], board.verticies[2]]);
 
   for (var i = 0; i < 24; i++) {
     if (i % 8 === 0) {
       board.verticies[i].edge.push([board.verticies[i], board.verticies[i+1], board.verticies[i+2]]);
       board.verticies[i].edge.push([board.verticies[i], board.verticies[i+7], board.verticies[i+6]]);
+      board.verticies[i].adjascent = [board.verticies[i+7], board.verticies[i+1]];
     } else if (i % 8 === 7) {
       board.verticies[i].edge.push([board.verticies[i-1], board.verticies[i], board.verticies[i-7]]);
       board.verticies[i].edge.push([board.verticies[7], board.verticies[15], board.verticies[23]]);
+      board.verticies[i].adjascent = [board.verticies[i-7], board.verticies[i-1]];
     } else if (i % 2 === 0) {
       board.verticies[i].edge.push([board.verticies[i], board.verticies[i+1], board.verticies[i+2]]);
       board.verticies[i].edge.push([board.verticies[i], board.verticies[i-1], board.verticies[i-2]]);
+      board.verticies[i].adjascent = [board.verticies[i-1], board.verticies[i+1]];
     } else if (i < 7) {
       board.verticies[i].edge.push([board.verticies[i-1], board.verticies[i], board.verticies[i+1]]);
       board.verticies[i].edge.push([board.verticies[i], board.verticies[i+8], board.verticies[i+16]]);
+      board.verticies[i].adjascent = [board.verticies[i-1], board.verticies[i+1], board.verticies[i+8]];
     } else if (i < 15) {
       board.verticies[i].edge.push([board.verticies[i-1], board.verticies[i], board.verticies[i+1]]);
       board.verticies[i].edge.push([board.verticies[i-8], board.verticies[i], board.verticies[i+8]]);
+      board.verticies[i].adjascent = [board.verticies[i-1], board.verticies[i+1], board.verticies[i-8], board.verticies[i+8]];
     } else {
       board.verticies[i].edge.push([board.verticies[i-1], board.verticies[i], board.verticies[i+1]]);
       board.verticies[i].edge.push([board.verticies[i], board.verticies[i-8], board.verticies[i-16]]);
+      board.verticies[i].adjascent = [board.verticies[i-1], board.verticies[i+1], board.verticies[i-8]];
     }
   }
+
 }
