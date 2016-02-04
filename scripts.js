@@ -8,13 +8,19 @@ var board = {
         board.verticies[i].id.removeClass('player1 player2 free');
         board.verticies[i].id.addClass('free');
       } else if (board.verticies[i].owner === 'player1') {
-        console.log(board.verticies[i]);
         board.verticies[i].id.removeClass('player1 player2 free');
         board.verticies[i].id.addClass('player1');
       } else if (board.verticies[i].owner === 'player2') {
         board.verticies[i].id.removeClass('player1 player2 free');
         board.verticies[i].id.addClass('player2');
       }
+    }
+  },
+  switchPlayer: function() {
+    if (board.player === 'player1') {
+      board.player = 'player2';
+    } else {
+      board.player = 'player1';
     }
   }
 };
@@ -115,12 +121,20 @@ function getObjIndexFromNode(node) {
   return index;
 }
 
-function clickEventTest(fn) {
-  for (var i = 0; i < board.verticies.length; i++) {
-    board.verticies[i].id.on('click', function (event) {
-      $( event.target ).addClass('selected');
-    });
-  }
+function clickEventTest() {
+  board.clicks = $('.free').on('click', function (event) {
+    $( event.target ).addClass('player1');
+
+  });
+  // for (var i = 0; i < board.verticies.length; i++) {
+  // }
+}
+
+function removeClicks() {
+  console.log(board.clicks);
+  $('.free').off('click');
+  // for (var i = 0; i < board.verticies.length; i++) {
+  // }
 }
 
 function adjacentClickTest() {
@@ -149,7 +163,7 @@ function adjacentClickTest() {
 function turn() {
   switch (board.action) {
     case 'place':
-
+      place();
       break;
     case 'capture':
 
@@ -166,19 +180,21 @@ function turn() {
 }
 
 function place() {
-  for (var i = 0; i < board.verticies.length; i++) {
-    if (board.verticies[i].owner === 'free') {
-      board.verticies[i].id.on('click', function (event) {
-        var current = getObjIndexFromNode(event.target);
-        board.verticies[current].owner = board.player;
-      });
-    }
-  }
+  board.clicks = $('.free').on('click', function (event) {
+    $( event.target ).addClass(board.player);
+    var current = getObjIndexFromNode(event.target);
+    board.verticies[current].owner = board.player;
+  });
+}
+
+function capture() {
+
 }
 
 function setUp() {
   createVerticies();
   assignVerticies();
+  board.update();
   // setClickEvents();
 }
 
