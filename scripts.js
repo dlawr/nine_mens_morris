@@ -19,8 +19,10 @@ var board = {
   switchPlayer: function() {
     if (board.player === 'player1') {
       board.player = 'player2';
+      console.log('thing one');
     } else {
       board.player = 'player1';
+      console.log('thing two');
     }
   }
 };
@@ -35,16 +37,22 @@ function Vertex(index) {
 function testEdge(arr) {
   for (var i = 0; i < arr.length; i++) {
     var match = false;
-    if (arr[i][0].color != 'blank') {
-      match = true;
-      var current = arr[i][0].color;
-      for (var j = 0; j < arr.length; j++) {
-        if (current != arr[i][j].color) {
-          match = false;
-        }
+    // if (arr[i][0].owner != 'free') {
+    //   // match = true;
+    //   console.log('one');
+      if ((arr[i][0].owner === arr[i][1].owner) && (arr[i][0].owner === arr[i][2].owner)) {
+        match = true;
+        console.log('two');
       }
-    }
+      // var current = arr[i][0].owner;
+      // for (var j = 0; j < arr.length; j++) {
+      //   if (current != arr[i][j].owner) {
+      //     match = false;
+      //   }
+      // }
+    // }
   }
+  console.log(arr);
   return match;
 }
 
@@ -184,6 +192,16 @@ function place() {
     $( event.target ).addClass(board.player);
     var current = getObjIndexFromNode(event.target);
     board.verticies[current].owner = board.player;
+    $( '.vertex' ).off('click');
+    if (testEdge(board.verticies[current].edge)) {
+      console.log('goodby');
+      board.action = 'capture';
+      turn();
+    } else {
+      console.log('hello');
+      board.switchPlayer();
+      turn();
+    }
   });
 }
 
@@ -195,6 +213,9 @@ function setUp() {
   createVerticies();
   assignVerticies();
   board.update();
+  for (var i = 0; i < board.verticies.length; i++) {
+    board.verticies[i].id.addClass('vertex');
+  }
   // setClickEvents();
 }
 
