@@ -5,13 +5,16 @@
 .vertex {
   /*border: 1px solid #595139;*/
 }
-
-.player1 {
+.free {
 
 }
 
-.player2 {
+.player1 {
+  border: 1px solid #ff0000;
+}
 
+.player2 {
+  border: 1px solid #00ff00;
 }
 
 .selected {
