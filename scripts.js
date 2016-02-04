@@ -66,7 +66,15 @@ function assignVerticies() {
   for (var i = 0; i < board.verticies.length; i++) {
     // var i = 0;
     var id = '';
-    id = 'vertex' + i;
+    id = '#vertex' + i;
     board.verticies[i].id = $(id);
   }
+}
+
+function clickEventTest(fn) {
+  // for (var i = 0; i < board.verticies.length; i++) {
+  // }
+  board.verticies[0].id.on('click', function (event) {
+    console.log('click');
+  });
 }

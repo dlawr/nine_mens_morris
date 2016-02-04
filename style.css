@@ -13,3 +13,7 @@
 .player2 {
 
 }
+
+.selected {
+  border: 1px solid #ff0000;
+}
