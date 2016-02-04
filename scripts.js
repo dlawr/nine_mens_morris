@@ -32,7 +32,7 @@ function createVerticies() {
     board.verticies.push(new Vertex(i)); //game does not use position of vertex in array only edge and adjacent stored within vertex
   }
 
-  for (var i = 0; i < 24; i++) {
+  for (var i = 0; i < board.verticies.length; i++) {
     if (i % 8 === 0) {
       board.verticies[i].edge.push([board.verticies[i], board.verticies[i+1], board.verticies[i+2]]);
       board.verticies[i].edge.push([board.verticies[i], board.verticies[i+7], board.verticies[i+6]]);
@@ -68,13 +68,15 @@ function assignVerticies() {
     var id = '';
     id = '#vertex' + i;
     board.verticies[i].id = $(id);
+    console.log(i);
   }
 }
 
 function clickEventTest(fn) {
-  // for (var i = 0; i < board.verticies.length; i++) {
-  // }
-  board.verticies[0].id.on('click', function (event) {
-    console.log('click');
-  });
+  for (var i = 0; i < board.verticies.length; i++) {
+    board.verticies[i].id.on('click', function (event) {
+      console.log(this);
+      console.log(event.target);
+    });
+  }
 }
