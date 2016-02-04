@@ -37,10 +37,18 @@ function createVerticies() {
       board.verticies[i].edge.push([board.verticies[i], board.verticies[i+1], board.verticies[i+2]]);
       board.verticies[i].edge.push([board.verticies[i], board.verticies[i+7], board.verticies[i+6]]);
       board.verticies[i].adjacent = [board.verticies[i+7], board.verticies[i+1]];
-    } else if (i % 8 === 7) {
+    } else if (i === 7) {
       board.verticies[i].edge.push([board.verticies[i-1], board.verticies[i], board.verticies[i-7]]);
       board.verticies[i].edge.push([board.verticies[7], board.verticies[15], board.verticies[23]]);
-      board.verticies[i].adjacent = [board.verticies[i-7], board.verticies[i-1]];
+      board.verticies[i].adjacent = [board.verticies[i-7], board.verticies[i-1], board.verticies[i+8]];
+    } else if (i === 15) {
+      board.verticies[i].edge.push([board.verticies[i-1], board.verticies[i], board.verticies[i-7]]);
+      board.verticies[i].edge.push([board.verticies[7], board.verticies[15], board.verticies[23]]);
+      board.verticies[i].adjacent = [board.verticies[i-7], board.verticies[i-1], board.verticies[i+8], board.verticies[i-8]];
+    } else if (i === 23) {
+      board.verticies[i].edge.push([board.verticies[i-1], board.verticies[i], board.verticies[i-7]]);
+      board.verticies[i].edge.push([board.verticies[7], board.verticies[15], board.verticies[23]]);
+      board.verticies[i].adjacent = [board.verticies[i-7], board.verticies[i-1], board.verticies[i-8]];
     } else if (i % 2 === 0) {
       board.verticies[i].edge.push([board.verticies[i], board.verticies[i+1], board.verticies[i+2]]);
       board.verticies[i].edge.push([board.verticies[i], board.verticies[i-1], board.verticies[i-2]]);
@@ -64,19 +72,41 @@ function createVerticies() {
 
 function assignVerticies() {
   for (var i = 0; i < board.verticies.length; i++) {
-    // var i = 0;
     var id = '';
     id = '#vertex' + i;
-    board.verticies[i].id = $(id);
-    console.log(i);
+    board.verticies[i].id = $( id );
   }
 }
 
 function clickEventTest(fn) {
   for (var i = 0; i < board.verticies.length; i++) {
     board.verticies[i].id.on('click', function (event) {
-      console.log(this);
-      console.log(event.target);
+      $( event.target ).addClass('selected');
+    });
+  }
+}
+
+//16
+//7
+function adjacentClickTest() {
+  for (var i = 0; i < board.verticies.length; i++) {
+    board.verticies[i].id.on('click', function (event) {
+      var index = $( event.target ).attr('id');
+      console.log(index);
+      index = index.toString();
+      console.log(index);
+      if (index.length === 7){
+        index = index[6];
+      } else {
+        index = index[6] + index[7];
+      }
+      console.log(index);
+      index = parseInt(index);
+      console.log(board.verticies[index].adjacent)  ;
+      for (var j = 0; j < board.verticies[index].adjacent.length; j++) {
+        board.verticies[index].adjacent[j].id.addClass('selected');
+
+      }
     });
   }
 }
