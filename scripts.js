@@ -1,5 +1,5 @@
-board = {
-  turn: '',
+var board = {
+  player: 'player1',
   action: 'place', //place capture select move
   verticies: []
   }
@@ -78,6 +78,16 @@ function assignVerticies() {
   }
 }
 
+function setClickEvents() {
+  for (var i = 0; i < board.verticies.length; i++) {
+    board.verticies[i].id.on('click', function (event) {
+      console.log(event.target);
+      return event.target;
+    });
+  }
+
+}
+
 function clickEventTest(fn) {
   for (var i = 0; i < board.verticies.length; i++) {
     board.verticies[i].id.on('click', function (event) {
@@ -86,8 +96,6 @@ function clickEventTest(fn) {
   }
 }
 
-//16
-//7
 function adjacentClickTest() {
   for (var i = 0; i < board.verticies.length; i++) {
     board.verticies[i].id.on('click', function (event) {
@@ -110,3 +118,34 @@ function adjacentClickTest() {
     });
   }
 }
+
+function turn() {
+  switch (board.action) {
+    case 'place':
+
+      break;
+    case 'capture':
+
+      break;
+    case 'select':
+
+      break;
+    case 'move':
+
+      break;
+    default:
+      break;
+  }
+}
+
+function place() {
+
+}
+
+function setUp() {
+  createVerticies();
+  assignVerticies();
+  setClickEvents();
+}
+
+setUp();
