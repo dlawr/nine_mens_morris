@@ -1,5 +1,15 @@
+body {
+  margin: 50px;
+}
+/*#everything {
+  margin: auto;
+}*/
 .grid {
+  font-size: 40px;
+}
 
+.display-div {
+  font-size: 20px;
 }
 
 .vertex {
@@ -8,13 +18,14 @@
 .free {
 
 }
-
 .player1 {
-  border: 1px solid #ff0000;
+  /*border: 1px solid #ff0000;*/
+  color: red;
 }
 
 .player2 {
-  border: 1px solid #00ff00;
+  /*border: 1px solid #00ff00;*/
+  color: green;
 }
 
 .selected {
