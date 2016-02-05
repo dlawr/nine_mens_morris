@@ -1,6 +1,8 @@
 var board = {
   player: 'player1',
   action: 'place', //place capture select move
+  player1: [9,0],
+  player2: [9,0],
   verticies: [],
   update: function() {
     for (var i = 0; i < board.verticies.length; i++) {
@@ -35,8 +37,8 @@ function Vertex(index) {
 }
 
 function testEdge(arr) {
+  var match = false;
   for (var i = 0; i < arr.length; i++) {
-    var match = false;
     // if (arr[i][0].owner != 'free') {
     //   // match = true;
     //   console.log('one');
@@ -169,12 +171,13 @@ function adjacentClickTest() {
 }
 
 function turn() {
+  console.log('turn');
   switch (board.action) {
     case 'place':
       place();
       break;
     case 'capture':
-
+      capture();
       break;
     case 'select':
 
@@ -188,25 +191,55 @@ function turn() {
 }
 
 function place() {
-  board.clicks = $('.free').on('click', function (event) {
-    $( event.target ).addClass(board.player);
-    var current = getObjIndexFromNode(event.target);
-    board.verticies[current].owner = board.player;
-    $( '.vertex' ).off('click');
-    if (testEdge(board.verticies[current].edge)) {
-      console.log('goodby');
-      board.action = 'capture';
-      turn();
-    } else {
-      console.log('hello');
-      board.switchPlayer();
-      turn();
-    }
-  });
+  if(board[board.player][0] > 0){
+    $('.free').on('click', function(event) {
+      $( event.target ).removeClass('free');
+      $( event.target ).addClass(board.player);
+      var current = getObjIndexFromNode(event.target);
+      board.verticies[current].owner = board.player;
+      board[board.player][0] -= 1;
+      console.log(board[board.player][0]);
+      $( '.vertex' ).off('click');
+      if (testEdge(board.verticies[current].edge)) {
+        console.log('goodby');
+        board.action = 'capture';
+        turn();
+      } else {
+        console.log('hello');
+        board.switchPlayer();
+        turn();
+      }
+    });
+  } else {
+    board.action = 'move';
+    turn();
+  }
 }
 
 function capture() {
-
+  console.log('capture');
+  var victim = '';
+  if (board.player === 'player1') {
+    victim = '.player2';
+  } else {
+    victim = '.player1';
+  }
+  console.log(victim);
+  $(victim).on('click', function(event){
+    var victim = '';
+    if (board.player === 'player1') {
+      victim = 'player2';
+    } else {
+      victim = 'player1';
+    }
+    $(event.target).removeClass(victim);
+    $(event.target).addClass('free');
+    $('.vertex').off('click');
+    var current = getObjIndexFromNode(event.target);
+    board.verticies[current].owner = 'free';
+    board.action = 'place';
+    turn();
+  });
 }
 
 function setUp() {
