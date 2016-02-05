@@ -179,9 +179,9 @@ function turn() {
     case 'capture':
       capture();
       break;
-    case 'select':
-
-      break;
+    // case 'select':
+    //
+    //   break;
     case 'move':
 
       break;
@@ -239,6 +239,14 @@ function capture() {
     board.verticies[current].owner = 'free';
     board.action = 'place';
     turn();
+  });
+}
+
+function move() {
+  $(board.player).on('click', function(event){
+
+    var current = getObjIndexFromNode(event.target);
+    
   });
 }
 
