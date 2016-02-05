@@ -200,10 +200,10 @@ function turn() {
 
 function victory() {
   if (board.player1[1] > 8) {
-    console.log('player2 wins');
+    console.log('player1 wins');
     board.action = 'win';
   } else if (board.player2[1] > 8) {
-    console.log('player1 wins');
+    console.log('player2 wins');
     board.action = 'win';
   }
 }
