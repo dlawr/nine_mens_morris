@@ -320,6 +320,12 @@ function move() {
 }
 
 $('#start-reset').on('click', function(){
+  board.player = 'player1';
+  board.action = 'place';
+  board.winner = '';
+  board.player1 = [9,0];
+  board.player2 = [9,0];
+  board.verticies = [];
   createVerticies();
   assignVerticies();
   board.display();
