@@ -1,6 +1,6 @@
 var board = {
   player: 'player1',
-  action: 'place', //place capture select move
+  action: 'place', //place capture move
   player1: [9,0],
   player2: [9,0],
   verticies: [],
@@ -26,9 +26,17 @@ var board = {
       board.player = 'player1';
       console.log('thing two');
     }
+  },
+  display: function() {
+    $boardDisplay.text(board.player + ' ' + board.action + ' a piece');
+    $p1display.text('player1 has ' + board.player1[0] + ' unplaced pieces and has captured ' + board.player1[1] + ' pieces');
+    $p2display.text('player2 has ' + board.player2[0] + ' unplaced pieces and has captured ' + board.player2[1] + ' pieces');
   }
 };
 
+var $p1display = $('#p1display');
+var $p2display = $('#p2display');
+var $boardDisplay = $('#board-display');
 
 function Vertex(index) {
   this.index = index;
