@@ -246,7 +246,10 @@ function move() {
   $(board.player).on('click', function(event){
 
     var current = getObjIndexFromNode(event.target);
-    
+    current.adjacent;
+    for (var i = 0; i < current.adjacent.length; i++) {
+      
+    }
   });
 }
 
