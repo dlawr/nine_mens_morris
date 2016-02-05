@@ -80,6 +80,10 @@ function createVerticies() {
       board.verticies[i].edge.push([board.verticies[i-1], board.verticies[i], board.verticies[i-7]]);
       board.verticies[i].edge.push([board.verticies[7], board.verticies[15], board.verticies[23]]);
       board.verticies[i].adjacent = [board.verticies[i-7], board.verticies[i-1], board.verticies[i-8]];
+    } else if (i % 8 === 6) {
+      board.verticies[i].edge.push([board.verticies[i], board.verticies[i+1], board.verticies[i-6]]);
+      board.verticies[i].edge.push([board.verticies[i], board.verticies[i-1], board.verticies[i-2]]);
+      board.verticies[i].adjacent = [board.verticies[i-1], board.verticies[i+1]];
     } else if (i % 2 === 0) {
       board.verticies[i].edge.push([board.verticies[i], board.verticies[i+1], board.verticies[i+2]]);
       board.verticies[i].edge.push([board.verticies[i], board.verticies[i-1], board.verticies[i-2]]);
@@ -258,6 +262,9 @@ function move() {
       var newPosition = getObjIndexFromNode(event.target);
       $(event.target).removeClass('free');
       $(event.target).addClass(board.player);
+      $('.vertex').off('click');
+      testEdge(board.verticies[newPosition].edge);
+      turn();
     });
   });
 }
