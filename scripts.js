@@ -179,6 +179,7 @@ function adjacentClickTest() {
 
 function turn() {
   console.log('turn');
+  victory();
   switch (board.action) {
     case 'place':
       place();
@@ -194,6 +195,16 @@ function turn() {
       break;
     default:
       break;
+  }
+}
+
+function victory() {
+  if (board.player1[1] > 8) {
+    console.log('player2 wins');
+    board.action = 'win';
+  } else if (board.player2[1] > 8) {
+    console.log('player1 wins');
+    board.action = 'win';
   }
 }
 
@@ -244,6 +255,8 @@ function capture() {
     $('.vertex').off('click');
     var current = getObjIndexFromNode(event.target);
     board.verticies[current].owner = 'free';
+    board[board.player][1] += 1;
+    console.log(board[board.player]);
     board.action = 'place';
     board.switchPlayer();
     turn();
