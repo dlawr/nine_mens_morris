@@ -1,8 +1,8 @@
 var board = {
   player: 'player1',
   action: 'place', //place capture select move
-  player1: [1,0],
-  player2: [1,0],
+  player1: [9,0],
+  player2: [9,0],
   verticies: [],
   update: function() {
     for (var i = 0; i < board.verticies.length; i++) {
@@ -43,9 +43,10 @@ function testEdge(arr) {
     //   // match = true;
     //   console.log('one');
       if ((arr[i][0].owner === arr[i][1].owner) && (arr[i][0].owner === arr[i][2].owner)) {
+        console.log('two');
         if (arr[i][0].owner != 'free') {
           match = true;
-          console.log('two');
+          console.log('three');
         }
       }
       // var current = arr[i][0].owner;
@@ -276,6 +277,7 @@ function move() {
       $(event.target).removeClass('free');
       $(event.target).addClass(board.player);
       $('.vertex').off('click');
+      board.verticies[newPosition].owner = board.player;
       if (testEdge(board.verticies[newPosition].edge)) {
         capture();
       } else {
