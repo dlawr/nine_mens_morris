@@ -238,6 +238,7 @@ function capture() {
     var current = getObjIndexFromNode(event.target);
     board.verticies[current].owner = 'free';
     board.action = 'place';
+    board.switchPlayer();
     turn();
   });
 }
@@ -248,8 +249,16 @@ function move() {
     var current = getObjIndexFromNode(event.target);
     current.adjacent;
     for (var i = 0; i < current.adjacent.length; i++) {
-      
+      if (current.adjacent[i].owner === 'free') {
+        current.adjacent[i].id.addClass('adjacent');
+      }
     }
+
+    $('.adjacent').on('click', function(event){
+      var newPosition = getObjIndexFromNode(event.target);
+      $(event.target).removeClass('free');
+      $(event.target).addClass(board.player);
+    });
   });
 }
 
