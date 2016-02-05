@@ -1,8 +1,8 @@
 var board = {
   player: 'player1',
   action: 'place', //place capture select move
-  player1: [9,0],
-  player2: [9,0],
+  player1: [1,0],
+  player2: [1,0],
   verticies: [],
   update: function() {
     for (var i = 0; i < board.verticies.length; i++) {
@@ -43,8 +43,10 @@ function testEdge(arr) {
     //   // match = true;
     //   console.log('one');
       if ((arr[i][0].owner === arr[i][1].owner) && (arr[i][0].owner === arr[i][2].owner)) {
-        match = true;
-        console.log('two');
+        if (arr[i][0].owner != 'free') {
+          match = true;
+          console.log('two');
+        }
       }
       // var current = arr[i][0].owner;
       // for (var j = 0; j < arr.length; j++) {
@@ -187,7 +189,7 @@ function turn() {
     //
     //   break;
     case 'move':
-
+      move();
       break;
     default:
       break;
@@ -248,23 +250,39 @@ function capture() {
 }
 
 function move() {
-  $(board.player).on('click', function(event){
-
+  console.log('move');
+  // $('.' + board.player).on('click', function(event){
+  //   console.log('hi');
+  // });
+  $('.' + board.player).on('click', function(event){
+    console.log('select');
+    $(event.target).removeClass(board.player);
+    $(event.target).addClass('selected');
     var current = getObjIndexFromNode(event.target);
-    current.adjacent;
-    for (var i = 0; i < current.adjacent.length; i++) {
-      if (current.adjacent[i].owner === 'free') {
-        current.adjacent[i].id.addClass('adjacent');
+    board.verticies[current].owner = 'free';
+    console.log(current);
+    for (var i = 0; i < board.verticies[current].adjacent.length; i++) {
+      if (board.verticies[current].adjacent[i].owner === 'free') {
+        board.verticies[current].adjacent[i].id.addClass('adjacent');
       }
     }
-
+    $('.vertex').off('click');
     $('.adjacent').on('click', function(event){
+      console.log('move');
+      var previous = $('.selected');
+      previous.removeClass('selected');
+      previous.addClass('free');
       var newPosition = getObjIndexFromNode(event.target);
       $(event.target).removeClass('free');
       $(event.target).addClass(board.player);
       $('.vertex').off('click');
-      testEdge(board.verticies[newPosition].edge);
-      turn();
+      if (testEdge(board.verticies[newPosition].edge)) {
+        capture();
+      } else {
+        board.switchPlayer();
+        board.action = 'place';
+        turn();
+      }
     });
   });
 }
