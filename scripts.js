@@ -1,6 +1,7 @@
 var board = {
   player: 'player1',
   action: 'place', //place capture move
+  winner: '',
   player1: [9,0],
   player2: [9,0],
   verticies: [],
@@ -31,6 +32,9 @@ var board = {
     $boardDisplay.text(board.player + ' ' + board.action + ' a piece');
     $p1display.text('player1 has ' + board.player1[0] + ' unplaced pieces and has captured ' + board.player1[1] + ' pieces');
     $p2display.text('player2 has ' + board.player2[0] + ' unplaced pieces and has captured ' + board.player2[1] + ' pieces');
+    if (board.action === 'win') {
+      $boardDisplay.text(board.winner + ' wins!');
+    }
   }
 };
 
@@ -188,6 +192,7 @@ function adjacentClickTest() {
 function turn() {
   console.log('turn');
   victory();
+  board.display();
   switch (board.action) {
     case 'place':
       place();
@@ -210,13 +215,16 @@ function victory() {
   if (board.player1[1] > 8) {
     console.log('player1 wins');
     board.action = 'win';
+    board.winner = 'player1';
   } else if (board.player2[1] > 8) {
     console.log('player2 wins');
     board.action = 'win';
+    board.winner = 'player2';
   }
 }
 
 function place() {
+  console.log('place');
   if(board[board.player][0] > 0){
     $('.free').on('click', function(event) {
       $( event.target ).removeClass('free');
@@ -300,7 +308,8 @@ function move() {
       $('.vertex').off('click');
       board.verticies[newPosition].owner = board.player;
       if (testEdge(board.verticies[newPosition].edge)) {
-        capture();
+        board.action = 'capture'
+        turn();
       } else {
         board.switchPlayer();
         board.action = 'place';
@@ -310,14 +319,24 @@ function move() {
   });
 }
 
-function setUp() {
+$('#start-reset').on('click', function(){
   createVerticies();
   assignVerticies();
+  board.display();
   board.update();
   for (var i = 0; i < board.verticies.length; i++) {
     board.verticies[i].id.addClass('vertex');
   }
-  // setClickEvents();
-}
+  turn();
+});
+// function setUp() {
+//   createVerticies();
+//   assignVerticies();
+//   board.update();
+//   for (var i = 0; i < board.verticies.length; i++) {
+//     board.verticies[i].id.addClass('vertex');
+//   }
+//   // setClickEvents();
+// }
 
-setUp();
+// setUp();
