@@ -1,6 +1,7 @@
 var board = {
   player: 'player1',
-  action: 'place', //place capture select move
+  action: 'place', //place capture move
+  winner: '',
   player1: [9,0],
   player2: [9,0],
   verticies: [],
@@ -26,9 +27,20 @@ var board = {
       board.player = 'player1';
       console.log('thing two');
     }
+  },
+  display: function() {
+    $boardDisplay.text(board.player + ' ' + board.action + ' a piece');
+    $p1display.text('player1 has ' + board.player1[0] + ' unplaced pieces and has captured ' + board.player1[1] + ' pieces');
+    $p2display.text('player2 has ' + board.player2[0] + ' unplaced pieces and has captured ' + board.player2[1] + ' pieces');
+    if (board.action === 'win') {
+      $boardDisplay.text(board.winner + ' wins!');
+    }
   }
 };
 
+var $p1display = $('#p1display');
+var $p2display = $('#p2display');
+var $boardDisplay = $('#board-display');
 
 function Vertex(index) {
   this.index = index;
@@ -43,8 +55,11 @@ function testEdge(arr) {
     //   // match = true;
     //   console.log('one');
       if ((arr[i][0].owner === arr[i][1].owner) && (arr[i][0].owner === arr[i][2].owner)) {
-        match = true;
         console.log('two');
+        if (arr[i][0].owner != 'free') {
+          match = true;
+          console.log('three');
+        }
       }
       // var current = arr[i][0].owner;
       // for (var j = 0; j < arr.length; j++) {
@@ -80,6 +95,10 @@ function createVerticies() {
       board.verticies[i].edge.push([board.verticies[i-1], board.verticies[i], board.verticies[i-7]]);
       board.verticies[i].edge.push([board.verticies[7], board.verticies[15], board.verticies[23]]);
       board.verticies[i].adjacent = [board.verticies[i-7], board.verticies[i-1], board.verticies[i-8]];
+    } else if (i % 8 === 6) {
+      board.verticies[i].edge.push([board.verticies[i], board.verticies[i+1], board.verticies[i-6]]);
+      board.verticies[i].edge.push([board.verticies[i], board.verticies[i-1], board.verticies[i-2]]);
+      board.verticies[i].adjacent = [board.verticies[i-1], board.verticies[i+1]];
     } else if (i % 2 === 0) {
       board.verticies[i].edge.push([board.verticies[i], board.verticies[i+1], board.verticies[i+2]]);
       board.verticies[i].edge.push([board.verticies[i], board.verticies[i-1], board.verticies[i-2]]);
@@ -172,6 +191,8 @@ function adjacentClickTest() {
 
 function turn() {
   console.log('turn');
+  victory();
+  board.display();
   switch (board.action) {
     case 'place':
       place();
@@ -183,14 +204,27 @@ function turn() {
     //
     //   break;
     case 'move':
-
+      move();
       break;
     default:
       break;
   }
 }
 
+function victory() {
+  if (board.player1[1] > 8) {
+    console.log('player1 wins');
+    board.action = 'win';
+    board.winner = 'player1';
+  } else if (board.player2[1] > 8) {
+    console.log('player2 wins');
+    board.action = 'win';
+    board.winner = 'player2';
+  }
+}
+
 function place() {
+  console.log('place');
   if(board[board.player][0] > 0){
     $('.free').on('click', function(event) {
       $( event.target ).removeClass('free');
@@ -237,30 +271,78 @@ function capture() {
     $('.vertex').off('click');
     var current = getObjIndexFromNode(event.target);
     board.verticies[current].owner = 'free';
+    board[board.player][1] += 1;
+    console.log(board[board.player]);
     board.action = 'place';
+    board.switchPlayer();
     turn();
   });
 }
 
 function move() {
-  $(board.player).on('click', function(event){
-
+  console.log('move');
+  // $('.' + board.player).on('click', function(event){
+  //   console.log('hi');
+  // });
+  $('.' + board.player).on('click', function(event){
+    console.log('select');
+    $(event.target).removeClass(board.player);
+    $(event.target).addClass('selected');
     var current = getObjIndexFromNode(event.target);
-    current.adjacent;
-    for (var i = 0; i < current.adjacent.length; i++) {
-      
+    board.verticies[current].owner = 'free';
+    console.log(current);
+    for (var i = 0; i < board.verticies[current].adjacent.length; i++) {
+      if (board.verticies[current].adjacent[i].owner === 'free') {
+        board.verticies[current].adjacent[i].id.addClass('adjacent');
+      }
     }
+    $('.vertex').off('click');
+    $('.adjacent').on('click', function(event){
+      console.log('move');
+      var previous = $('.selected');
+      previous.removeClass('selected');
+      previous.addClass('free');
+      var newPosition = getObjIndexFromNode(event.target);
+      $(event.target).removeClass('free');
+      $(event.target).addClass(board.player);
+      $('.vertex').off('click');
+      board.verticies[newPosition].owner = board.player;
+      if (testEdge(board.verticies[newPosition].edge)) {
+        board.action = 'capture'
+        turn();
+      } else {
+        board.switchPlayer();
+        board.action = 'place';
+        turn();
+      }
+    });
   });
 }
 
-function setUp() {
+$('#start-reset').on('click', function(){
+  board.player = 'player1';
+  board.action = 'place';
+  board.winner = '';
+  board.player1 = [9,0];
+  board.player2 = [9,0];
+  board.verticies = [];
   createVerticies();
   assignVerticies();
+  board.display();
   board.update();
   for (var i = 0; i < board.verticies.length; i++) {
     board.verticies[i].id.addClass('vertex');
   }
-  // setClickEvents();
-}
+  turn();
+});
+// function setUp() {
+//   createVerticies();
+//   assignVerticies();
+//   board.update();
+//   for (var i = 0; i < board.verticies.length; i++) {
+//     board.verticies[i].id.addClass('vertex');
+//   }
+//   // setClickEvents();
+// }
 
-setUp();
+// setUp();
