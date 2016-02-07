@@ -22,10 +22,8 @@ var board = {
   switchPlayer: function() {
     if (board.player === 'player1') {
       board.player = 'player2';
-      console.log('thing one');
     } else {
       board.player = 'player1';
-      console.log('thing two');
     }
   },
   display: function() {
@@ -55,10 +53,8 @@ function testEdge(arr) {
     //   // match = true;
     //   console.log('one');
       if ((arr[i][0].owner === arr[i][1].owner) && (arr[i][0].owner === arr[i][2].owner)) {
-        console.log('two');
         if (arr[i][0].owner != 'free') {
           match = true;
-          console.log('three');
         }
       }
       // var current = arr[i][0].owner;
@@ -69,7 +65,6 @@ function testEdge(arr) {
       // }
     // }
   }
-  console.log(arr);
   return match;
 }
 
@@ -190,7 +185,6 @@ function adjacentClickTest() {
 }
 
 function turn() {
-  console.log('turn');
   victory();
   board.display();
   switch (board.action) {
@@ -213,18 +207,15 @@ function turn() {
 
 function victory() {
   if (board.player1[1] > 8) {
-    console.log('player1 wins');
     board.action = 'win';
     board.winner = 'player1';
   } else if (board.player2[1] > 8) {
-    console.log('player2 wins');
     board.action = 'win';
     board.winner = 'player2';
   }
 }
 
 function place() {
-  console.log('place');
   if(board[board.player][0] > 0){
     $('.free').on('click', function(event) {
       $( event.target ).removeClass('free');
@@ -232,14 +223,11 @@ function place() {
       var current = getObjIndexFromNode(event.target);
       board.verticies[current].owner = board.player;
       board[board.player][0] -= 1;
-      console.log(board[board.player][0]);
       $( '.vertex' ).off('click');
       if (testEdge(board.verticies[current].edge)) {
-        console.log('goodby');
         board.action = 'capture';
         turn();
       } else {
-        console.log('hello');
         board.switchPlayer();
         turn();
       }
@@ -251,14 +239,12 @@ function place() {
 }
 
 function capture() {
-  console.log('capture');
   var victim = '';
   if (board.player === 'player1') {
     victim = '.player2';
   } else {
     victim = '.player1';
   }
-  console.log(victim);
   $(victim).on('click', function(event){
     var victim = '';
     if (board.player === 'player1') {
@@ -272,7 +258,6 @@ function capture() {
     var current = getObjIndexFromNode(event.target);
     board.verticies[current].owner = 'free';
     board[board.player][1] += 1;
-    console.log(board[board.player]);
     board.action = 'place';
     board.switchPlayer();
     turn();
@@ -280,17 +265,14 @@ function capture() {
 }
 
 function move() {
-  console.log('move');
   // $('.' + board.player).on('click', function(event){
   //   console.log('hi');
   // });
   $('.' + board.player).on('click', function(event){
-    console.log('select');
     $(event.target).removeClass(board.player);
     $(event.target).addClass('selected');
     var current = getObjIndexFromNode(event.target);
     board.verticies[current].owner = 'free';
-    console.log(current);
     for (var i = 0; i < board.verticies[current].adjacent.length; i++) {
       if (board.verticies[current].adjacent[i].owner === 'free') {
         board.verticies[current].adjacent[i].id.addClass('adjacent');
@@ -298,7 +280,6 @@ function move() {
     }
     $('.vertex').off('click');
     $('.adjacent').on('click', function(event){
-      console.log('move');
       var previous = $('.selected');
       previous.removeClass('selected');
       previous.addClass('free');
