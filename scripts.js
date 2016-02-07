@@ -1,6 +1,6 @@
 var board = {
   player: 'player1',
-  action: 'place', //place capture move
+  action: 'place', //place capture move win
   winner: '',
   player1: [9,0],
   player2: [9,0],
@@ -49,21 +49,11 @@ function Vertex(index) {
 function testEdge(arr) {
   var match = false;
   for (var i = 0; i < arr.length; i++) {
-    // if (arr[i][0].owner != 'free') {
-    //   // match = true;
-    //   console.log('one');
       if ((arr[i][0].owner === arr[i][1].owner) && (arr[i][0].owner === arr[i][2].owner)) {
         if (arr[i][0].owner != 'free') {
           match = true;
         }
       }
-      // var current = arr[i][0].owner;
-      // for (var j = 0; j < arr.length; j++) {
-      //   if (current != arr[i][j].owner) {
-      //     match = false;
-      //   }
-      // }
-    // }
   }
   return match;
 }
@@ -123,16 +113,6 @@ function assignVerticies() {
   }
 }
 
-// function setClickEvents() {
-//   for (var i = 0; i < board.verticies.length; i++) {
-//     board.verticies[i].id.on('click', function (event) {
-//       console.log(event.target);
-//       return event.target;
-//     });
-//   }
-//
-// }
-
 function getObjIndexFromNode(node) {
   var index = $( node ).attr('id');
   index = index.toString();
@@ -143,15 +123,6 @@ function getObjIndexFromNode(node) {
   }
   index = parseInt(index);
   return index;
-}
-
-function clickEventTest() {
-  board.clicks = $('.free').on('click', function (event) {
-    $( event.target ).addClass('player1');
-
-  });
-  // for (var i = 0; i < board.verticies.length; i++) {
-  // }
 }
 
 function removeClicks() {
@@ -194,9 +165,6 @@ function turn() {
     case 'capture':
       capture();
       break;
-    // case 'select':
-    //
-    //   break;
     case 'move':
       move();
       break;
@@ -265,9 +233,6 @@ function capture() {
 }
 
 function move() {
-  // $('.' + board.player).on('click', function(event){
-  //   console.log('hi');
-  // });
   $('.' + board.player).on('click', function(event){
     $(event.target).removeClass(board.player);
     $(event.target).addClass('selected');
@@ -316,14 +281,3 @@ $('#start-reset').on('click', function(){
   }
   turn();
 });
-// function setUp() {
-//   createVerticies();
-//   assignVerticies();
-//   board.update();
-//   for (var i = 0; i < board.verticies.length; i++) {
-//     board.verticies[i].id.addClass('vertex');
-//   }
-//   // setClickEvents();
-// }
-
-// setUp();
