@@ -1,9 +1,7 @@
 body {
   margin: 50px;
 }
-/*#everything {
-  margin: auto;
-}*/
+
 .grid {
   font-size: 40px;
 }
@@ -12,19 +10,14 @@ body {
   font-size: 20px;
 }
 
-.vertex {
-  /*border: 1px solid #595139;*/
-}
 .free {
 
 }
 .player1 {
-  /*border: 1px solid #ff0000;*/
   color: red;
 }
 
 .player2 {
-  /*border: 1px solid #00ff00;*/
   color: green;
 }
 
