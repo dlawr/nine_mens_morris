@@ -253,6 +253,7 @@ function move() {
       $(event.target).addClass(board.player);
       $('.vertex').off('click');
       board.verticies[newPosition].owner = board.player;
+      $('.vertex').removeClass('adjacent');
       if (testEdge(board.verticies[newPosition].edge)) {
         board.action = 'capture'
         turn();
