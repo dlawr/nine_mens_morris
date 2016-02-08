@@ -233,9 +233,11 @@ function capture() {
 }
 
 function move() {
+  console.log(board.player);
   $('.' + board.player).on('click', function(event){
     $(event.target).removeClass(board.player);
     $(event.target).addClass('selected');
+    console.log(board.player);
     var current = getObjIndexFromNode(event.target);
     board.verticies[current].owner = 'free';
     for (var i = 0; i < board.verticies[current].adjacent.length; i++) {
@@ -243,24 +245,39 @@ function move() {
         board.verticies[current].adjacent[i].id.addClass('adjacent');
       }
     }
+    console.log(board.player);
+    board.verticies[current].id.addClass('adjacent');
     $('.vertex').off('click');
+    console.log(board.player);
     $('.adjacent').on('click', function(event){
       var previous = $('.selected');
-      previous.removeClass('selected');
-      previous.addClass('free');
-      var newPosition = getObjIndexFromNode(event.target);
-      $(event.target).removeClass('free');
-      $(event.target).addClass(board.player);
-      $('.vertex').off('click');
-      board.verticies[newPosition].owner = board.player;
-      $('.vertex').removeClass('adjacent');
-      if (testEdge(board.verticies[newPosition].edge)) {
-        board.action = 'capture'
-        turn();
+      if ($(event.target).attr('id') === previous.attr('id')) {
+        previous.addClass(board.player);
+        var newPosition = getObjIndexFromNode(event.target);
+        board.verticies[newPosition].owner = board.player;
+        previous.removeClass('selected');
+        $('.vertex').removeClass('adjacent');
+        $('.vertex').off('click');
+        console.log(board.player);
+        move();
       } else {
-        board.switchPlayer();
-        board.action = 'place';
-        turn();
+        console.log('else');
+        previous.removeClass('selected');
+        previous.addClass('free');
+        var newPosition = getObjIndexFromNode(event.target);
+        $(event.target).removeClass('free');
+        $(event.target).addClass(board.player);
+        $('.vertex').off('click');
+        board.verticies[newPosition].owner = board.player;
+        $('.vertex').removeClass('adjacent');
+        if (testEdge(board.verticies[newPosition].edge)) {
+          board.action = 'capture'
+          turn();
+        } else {
+          board.switchPlayer();
+          board.action = 'place';
+          turn();
+        }
       }
     });
   });
